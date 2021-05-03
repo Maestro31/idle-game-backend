@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "paths": {
+      "*": [
+        "./node_modules/*"
+      ]
+    },
+  },
+  "include": ["src"],
+  "exclude": ["build", "node_modules"],
+}
