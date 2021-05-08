@@ -2,17 +2,19 @@ import { Router } from 'express'
 import HasherAdapter from '../../services/HasherAdapter'
 import InvalidCredentialsException from '../../core/user/exceptions/InvalidCredentialsException'
 import verifyToken from '../middlewares/verifyToken'
-import LoginCommandHandler from '../../core/user/commands/LoginCommandHandler'
 import RegisterUserCommandHandler from '../../core/user/commands/RegisterUserCommandHandler'
-import SQLiteUserRepository from '../../core/user/infra/persistence/SQLiteUserRepository'
 import UniqueIdAdapter from '../../services/UniqueIdAdapter'
 import JsonWebTokenProvider from '../../services/JsonWebTokenProvider'
+import SequelizeUserRepository from '../../core/user/infra/persistence/SequelizeUserRepository'
+import LoginQueryHandler from '../../core/user/queries/LoginQueryHandler'
+import GetUserQueryHandler from '../../core/user/queries/GetUserQueryHandler'
+import UserNotFoundException from '../../core/user/exceptions/UserNotFoundException'
 
 const router = Router()
 
 router.post('/', async (req, res, next) => {
   const registerUser = new RegisterUserCommandHandler(
-    new SQLiteUserRepository(),
+    new SequelizeUserRepository(),
     new UniqueIdAdapter(),
     new HasherAdapter()
   )
@@ -28,8 +30,8 @@ router.post('/', async (req, res, next) => {
 })
 
 router.post('/signin', async (req, res, next) => {
-  const loginUser = new LoginCommandHandler(
-    new SQLiteUserRepository(),
+  const loginUser = new LoginQueryHandler(
+    new SequelizeUserRepository(),
     new HasherAdapter(),
     new JsonWebTokenProvider()
   )
@@ -46,18 +48,14 @@ router.post('/signin', async (req, res, next) => {
 })
 
 router.get('/me', verifyToken, async (req, res, next) => {
-  const userRepository = new SQLiteUserRepository()
+  const getUser = new GetUserQueryHandler(new SequelizeUserRepository())
 
   try {
-    const user = await userRepository.findById(req.currentUserId)
-    if (!user) {
-      return res.status(404)
-    }
-
-    const { hashedPassword, ...userProps } = user.toPrimitives()
-
-    res.status(200).json({ user: userProps })
+    const response = await getUser.execute({ userID: req.currentUserId })
+    res.status(200).json({ user: response })
   } catch (e) {
+    if (e instanceof UserNotFoundException)
+      res.status(404).json({ message: e.message })
     res.status(400).json({ message: e.message })
   }
 })

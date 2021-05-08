@@ -1,4 +1,4 @@
-import UserRepositoryInterface from '../../repository/UserRepositoryInterface'
+import UserRepositoryInterface from '../../repositories/UserRepositoryInterface'
 import User from '../../User'
 
 export default class InMemoryUserRepository implements UserRepositoryInterface {
@@ -27,6 +27,10 @@ export default class InMemoryUserRepository implements UserRepositoryInterface {
     const foundUser = this.users.find((user) => user.id === id)
     if (foundUser) return Promise.resolve(foundUser)
     return Promise.resolve(null)
+  }
+
+  async exists(user: User): Promise<boolean> {
+    return (await this.findById(user.id)) != null
   }
 
   feed(users: User[]) {

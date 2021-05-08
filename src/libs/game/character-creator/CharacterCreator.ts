@@ -1,16 +1,22 @@
 import { CharacterProps, Skill } from './character.interface'
 
+export interface CharacterAttributes {
+  skillPoints: number
+  health: number
+  attack: number
+  defense: number
+  magic: number
+  rank: number
+}
 export default class CharacterCreator {
-  createCharacterProps(name: string): CharacterProps {
+  createCharacterProps(): CharacterAttributes {
     return {
-      name,
       skillPoints: 12,
       health: 10,
       attack: 0,
       defense: 0,
       magic: 0,
       rank: 0,
-      recoveredAt: new Date(),
     }
   }
 

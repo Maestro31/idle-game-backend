@@ -1,5 +1,5 @@
-import { CharacterProps } from '../character/Character'
+import { CharacterAttributes } from '../../libs/game/character-creator/CharacterCreator'
 
 export default interface CharacterCreatorInterface {
-  create(name: string): CharacterProps
+  create(): CharacterAttributes
 }
