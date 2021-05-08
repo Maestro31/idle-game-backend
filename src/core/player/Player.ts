@@ -1,17 +1,16 @@
 import InvalidArgumentsException from '../../shared/domain/exceptions/InvalidArgumentException'
-import Character, { CharacterStatus } from './Character'
+import Character, { CharacterStatus, Skill } from './Character'
 import CharacterLimitReachedException from './exceptions/CharacterLimitReachedException'
 import CharacterNotFoundException from './exceptions/CharacterNotFoundException'
-import InvalidCharacterStateException from './exceptions/InvalidCharacterStateException'
-
-const CHARACTER_LIMIT = 10
 
 export default class Player {
+  static readonly CHARACTER_LIMIT = 10
+
   constructor(readonly id: string, readonly characters: Character[] = []) {}
 
   getLivingCharacters() {
     return this.characters.filter(
-      (character) => character.getStatus() === CharacterStatus.LIVING
+      (character) => character.status === CharacterStatus.LIVING
     )
   }
 
@@ -25,7 +24,7 @@ export default class Player {
     defense: number
   ) {
     if (name === '') throw new InvalidArgumentsException('name')
-    if (this.characters.length === CHARACTER_LIMIT)
+    if (this.characters.length === Player.CHARACTER_LIMIT)
       throw new CharacterLimitReachedException()
 
     const character = Character.fromPrimitives({
@@ -45,11 +44,17 @@ export default class Player {
 
   setCharacterStatusAsDeleted(characterID: string): void {
     const character = this.findCharacterById(characterID)
-    if (!character) throw new CharacterNotFoundException()
-    character.setStatus(CharacterStatus.DELETED)
+    character.status = CharacterStatus.DELETED
   }
 
-  private findCharacterById(characterID: string): Character | undefined {
-    return this.characters.find((character) => character.id === characterID)
+  incrementCharacterSkill(skill: Skill, characterID: string): void {
+    const character = this.findCharacterById(characterID)
+    character.incrementSkill(skill)
+  }
+
+  private findCharacterById(characterID: string): Character {
+    const character = this.characters.find((c) => c.id === characterID)
+    if (!character) throw new CharacterNotFoundException()
+    return character
   }
 }

@@ -92,7 +92,7 @@ describe('Create Character Command', () => {
         })
       })
 
-      it(`should throwing an error if one skill point are consumed but ${skill} is greather than 1`, async () => {
+      it(`should throwing an error if one skill point is consumed but ${skill} is greather than 1`, async () => {
         await expectCharacterIsInvalid({
           skillPoints: 11,
           attack: 0,
@@ -125,7 +125,7 @@ describe('Create Character Command', () => {
       })
     })
 
-    it(`should throwing an error if one skill point are  consumed but health is greather than 12`, async () => {
+    it(`should throwing an error if one skill point is consumed but health is greather than 12`, async () => {
       await expectCharacterIsInvalid({
         skillPoints: 11,
         attack: 0,

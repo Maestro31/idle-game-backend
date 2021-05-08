@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import CreateCharacterCommandHandler from '../../core/player/commands/CreateCharacterCommandHandler'
 import DeleteCharacterCommandHandler from '../../core/player/commands/DeleteCharacterCommandHandler'
+import IncrementCharacterSkillCommandHandler from '../../core/player/commands/IncrementCharacterSkillCommandHandler'
 import SequelizeCharacterRepository from '../../core/player/infra/persistence/SequelizeCharacterRepository'
 import SequelizePlayerRepository from '../../core/player/infra/persistence/SequelizePlayerRepository'
 import GetCharactersQueryHandler from '../../core/player/queries/GetCharactersQueryHandler'
@@ -45,6 +46,28 @@ router.delete('/:characterID', verifyToken, async (req, res) => {
       userID: req.currentUserId,
     })
     res.status(204).send()
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+})
+
+router.post('/:characterID/increment/:skill', verifyToken, async (req, res) => {
+  if (
+    ['attack', 'magic', 'defense', 'health'].indexOf(req.params.skill) === -1
+  ) {
+    return res.sendStatus(404)
+  }
+
+  const incrementSkill = new IncrementCharacterSkillCommandHandler(
+    playerRepository
+  )
+  try {
+    await incrementSkill.execute({
+      skill: req.params.skill,
+      userID: req.currentUserId,
+      characterID: req.params.characterID,
+    })
+    res.sendStatus(204)
   } catch (e) {
     res.status(400).json({ message: e.message })
   }

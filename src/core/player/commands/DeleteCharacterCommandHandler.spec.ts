@@ -63,6 +63,6 @@ describe('Delete Character', () => {
       userID: 'uuid-user-1',
     })
 
-    expect(character.getStatus()).toBe(CharacterStatus.DELETED)
+    expect(character.status).toBe(CharacterStatus.DELETED)
   })
 })

@@ -35,7 +35,7 @@ export default class InMemoryCharacterRepository
 
   private getLivingCharacters() {
     return this.characters.filter(
-      (character) => character.getStatus() !== CharacterStatus.DELETED
+      (character) => character.status !== CharacterStatus.DELETED
     )
   }
 }

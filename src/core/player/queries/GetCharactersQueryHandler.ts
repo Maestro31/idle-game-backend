@@ -27,16 +27,10 @@ export default class GetCharactersQueryHandler
   }
 
   private characterToDTO(character: Character): CharacterDTO {
+    const props = character.toPrimitives()
     return {
-      id: character.id,
-      name: character.name,
-      skillPoints: character.skillPoints,
-      rank: character.rank,
-      attack: character.attack,
-      health: character.health,
-      magic: character.magic,
-      defense: character.defense,
-      recoveredAt: character.recoveredAt.toISOString(),
+      ...props,
+      recoveredAt: props.recoveredAt.toISOString(),
     }
   }
 }

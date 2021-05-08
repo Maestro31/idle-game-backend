@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
 
   try {
     await registerUser.execute({ firstname, lastname, email, password })
-    res.status(201).send()
+    res.sendStatus(201)
   } catch (e) {
     res.status(400).json({ message: e.message })
   }

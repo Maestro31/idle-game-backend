@@ -2,17 +2,11 @@ import Character from '../Character'
 
 export default class CharacterMapper {
   static toPersistence(character: Character): any {
+    const props = character.toPrimitives()
     return {
-      id: character.id,
-      name: character.name,
-      skillPoints: character.skillPoints,
-      health: character.health,
-      attack: character.attack,
-      magic: character.magic,
-      defense: character.defense,
-      rank: character.rank,
-      recoveredAt: character.recoveredAt,
-      status: character.getStatus().toString(),
+      ...props,
+      recoveredAt: props.recoveredAt,
+      status: character.status.toString(),
       ownerID: character.ownerID,
     }
   }
