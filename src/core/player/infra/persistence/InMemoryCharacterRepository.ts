@@ -14,15 +14,15 @@ export default class InMemoryCharacterRepository
   }
 
   async findAll(): Promise<Character[]> {
-    return Promise.resolve(this.getLivingCharacters())
+    return this.getLivingCharacters()
   }
 
   async findById(id: string): Promise<Character | null> {
     const foundCharacter = this.getLivingCharacters().find(
       (character) => character.id === id
     )
-    if (!foundCharacter) return Promise.resolve(null)
-    return Promise.resolve(foundCharacter)
+    if (!foundCharacter) return null
+    return foundCharacter
   }
 
   async exists(character: Character): Promise<boolean> {

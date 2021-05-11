@@ -6,27 +6,26 @@ export default class InMemoryUserRepository implements UserRepositoryInterface {
 
   async save(user: User): Promise<void> {
     this.users.push(user)
-    return Promise.resolve()
   }
 
   async findAll(): Promise<User[]> {
-    return Promise.resolve(this.users)
+    return this.users
   }
 
   async userExists(email: string): Promise<boolean> {
-    return Promise.resolve(!!this.users.find((user) => user.email === email))
+    return !!this.users.find((user) => user.email === email)
   }
 
   async findByEmail(email: string): Promise<User | null> {
     const foundUser = this.users.find((user) => user.email === email)
-    if (foundUser) return Promise.resolve(foundUser)
-    return Promise.resolve(null)
+    if (!foundUser) return null
+    return foundUser
   }
 
   async findById(id: string): Promise<User | null> {
     const foundUser = this.users.find((user) => user.id === id)
-    if (foundUser) return Promise.resolve(foundUser)
-    return Promise.resolve(null)
+    if (foundUser) return foundUser
+    return null
   }
 
   async exists(user: User): Promise<boolean> {

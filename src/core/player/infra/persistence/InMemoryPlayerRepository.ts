@@ -6,8 +6,8 @@ export default class InMemoryPlayerRepository
   implements PlayerRepositoryInterface {
   constructor(private characterRepository: CharacterRepositoryInterface) {}
 
-  findAll(): Promise<Player[]> {
-    return Promise.resolve(this.players)
+  async findAll(): Promise<Player[]> {
+    return this.players
   }
 
   async exists(player: Player): Promise<boolean> {
@@ -18,8 +18,8 @@ export default class InMemoryPlayerRepository
 
   async findById(id: string): Promise<Player | null> {
     const foundPlayer = this.players.find((player) => player.id === id)
-    if (foundPlayer == null) return Promise.resolve(null)
-    return Promise.resolve(foundPlayer)
+    if (foundPlayer == null) return null
+    return foundPlayer
   }
 
   async save(player: Player): Promise<void> {
