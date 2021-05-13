@@ -2,7 +2,7 @@ import Arena from '../arena/Arena'
 import CharacterCreator from '../character/CharacterCreator'
 import FighterStub from '../fighter/FighterStub'
 import InMemoryGameLogger from '../game-logger/InMemoryGameLogger'
-import RandomStub from '../services/RandomStub'
+import RandomStub from '../../services/RandomStub'
 import GameRunner from './GameRunner'
 
 describe('Game Runner', () => {

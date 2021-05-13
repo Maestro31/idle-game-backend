@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import CreateBattleCommandHandler from '../../core/battle/commands/CreateBattleCommandHandler'
-import SequelizeBattleRepository from '../../core/battle/infra/persistence/SequelizeBattleRepository'
-import SequelizeFighterRepository from '../../core/battle/infra/persistence/SequelizeFighterRepository'
-import RealOpponentSelector from '../../core/battle/infra/services/RealOpponnentSelector'
-import RealRandom from '../../game/services/RealRandom'
+import CreateBattleCommandHandler from '../../core/fighting/commands/CreateBattleCommandHandler'
+import SequelizeBattleRepository from '../../core/fighting/infra/persistence/SequelizeBattleRepository'
+import SequelizeFighterRepository from '../../core/fighting/infra/persistence/SequelizeFighterRepository'
+import RealOpponentSelector from '../../core/fighting/infra/services/RealOpponnentSelector'
+import RealRandom from '../../services/RealRandom'
 import RealDateProvider from '../../services/RealDateProvider'
 import UniqueIdAdapter from '../../services/UniqueIdAdapter'
 import verifyToken from '../middlewares/verifyToken'
@@ -20,7 +20,10 @@ router.post('/', verifyToken, async (req, res, next) => {
   )
 
   try {
-    await createBattle.execute({ characterID: req.body.characterID })
+    const battle = await createBattle.execute({
+      characterID: req.body.characterID,
+    })
+    res.status(200).json(battle)
   } catch (e) {
     res.status(400).json({ message: e.message })
   }

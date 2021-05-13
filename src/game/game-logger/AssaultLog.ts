@@ -1,5 +1,3 @@
-import { CharacterProps } from '../character/character.interface'
-
 interface FighterDTO {
   id: string
   name: string

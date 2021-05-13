@@ -2,7 +2,7 @@ import { CharacterProps } from '../character/character.interface'
 import CharacterCreator from '../character/CharacterCreator'
 import { Fighter } from '../fighter/Fighter'
 import AssaultLog from '../game-logger/AssaultLog'
-import { RandomInterface } from '../services/RandomInterface'
+import { RandomInterface } from '../../shared/services/RandomInterface'
 import { IllegalFightError } from './IllegalFightException'
 
 export default class Arena {

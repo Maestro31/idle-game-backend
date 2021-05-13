@@ -1,14 +1,14 @@
 import { Router } from 'express'
 import HasherAdapter from '../../services/HasherAdapter'
-import InvalidCredentialsException from '../../core/user/exceptions/InvalidCredentialsException'
+import InvalidCredentialsException from '../../core/authentication/exceptions/InvalidCredentialsException'
 import verifyToken from '../middlewares/verifyToken'
-import RegisterUserCommandHandler from '../../core/user/commands/RegisterUserCommandHandler'
+import RegisterUserCommandHandler from '../../core/authentication/commands/RegisterUserCommandHandler'
 import UniqueIdAdapter from '../../services/UniqueIdAdapter'
 import JsonWebTokenProvider from '../../services/JsonWebTokenProvider'
-import SequelizeUserRepository from '../../core/user/infra/persistence/SequelizeUserRepository'
-import LoginQueryHandler from '../../core/user/queries/LoginQueryHandler'
-import GetUserQueryHandler from '../../core/user/queries/GetUserQueryHandler'
-import UserNotFoundException from '../../core/user/exceptions/UserNotFoundException'
+import SequelizeUserRepository from '../../core/authentication/infra/persistence/SequelizeUserRepository'
+import LoginQueryHandler from '../../core/authentication/queries/LoginQueryHandler'
+import GetUserQueryHandler from '../../core/authentication/queries/GetUserQueryHandler'
+import UserNotFoundException from '../../core/authentication/exceptions/UserNotFoundException'
 
 const router = Router()
 

@@ -14,12 +14,10 @@
     "watch:dev": "nodemon",
     "test": "NODE_ENV=test jest --watchAll",
     "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all",
+    "preintegration": "NODE_ENV=test rm ./db.test.sqlite && npm run db:create:test",
     "integration": "NODE_ENV=test jest -c jest.integration.config.js --testTimeout=10000",
-    "preintegration": "NODE_ENV=test npm run db:reset:test && npm run db:create:test",
-    "db:create:test": "NODE_ENV=test npx sequelize-cli db:seed:all",
-    "db:reset:test": "NODE_ENV=test npx sequelize-cli db:seed:undo:all",
-    "db:create:dev": "NODE_ENV=development npx sequelize-cli db:seed:all",
-    "db:reset:dev": "NODE_ENV=development npx sequelize-cli db:seed:undo:all"
+    "db:create:test": "NODE_ENV=test npx sequelize-cli db:migrate",
+    "db:create:dev": "NODE_ENV=development npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "jest": {
     "testEnvironment": "node"

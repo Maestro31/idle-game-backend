@@ -1,6 +1,6 @@
 import Arena from './Arena'
 import CharacterCreator from '../character/CharacterCreator'
-import RandomStub from '../services/RandomStub'
+import RandomStub from '../../services/RandomStub'
 import FighterStub from '../fighter/FighterStub'
 import AssaultLog from '../game-logger/AssaultLog'
 import { CharacterProps } from '../character/character.interface'
