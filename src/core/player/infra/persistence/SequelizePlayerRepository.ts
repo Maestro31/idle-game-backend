@@ -7,10 +7,10 @@ import Player from '../../Player'
 import PlayerRepositoryInterface from '../../repositories/PlayerRepositoryInterface'
 import sequelize from '../../../../infra/persistence/sequelize'
 import CharacterRepositoryInterface from '../../repositories/CharacterRepositoryInterface'
-import { Op } from 'sequelize'
 
 export default class SequelizePlayerRepository
-  implements PlayerRepositoryInterface {
+  implements PlayerRepositoryInterface
+{
   constructor(private characterRepository: CharacterRepositoryInterface) {}
 
   async findAll(): Promise<Player[]> {

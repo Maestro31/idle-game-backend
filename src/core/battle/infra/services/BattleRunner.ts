@@ -6,13 +6,14 @@ import { RandomInterface } from '../../../../game/services/RandomInterface'
 import AssaultLog from '../../../../game/game-logger/AssaultLog'
 
 export default class BattleRunner implements BattleRunnerInterface {
+  constructor(private randomService: RandomInterface) {}
+
   run(
     fighterOfPlayer: Fighter,
     opponent: Fighter,
-    onLogCreatedCallback: (assaultLog: AssaultLog) => void,
-    randomService: RandomInterface
+    onLogCreatedCallback: (assaultLog: AssaultLog) => void
   ): Fighter {
-    const arena = this.prepareArena(fighterOfPlayer, opponent, randomService)
+    const arena = this.prepareArena(fighterOfPlayer, opponent)
     let winner = null
     arena.onFightEnded((winnerId: string) => {
       winner = winnerId === fighterOfPlayer.id ? fighterOfPlayer : opponent
@@ -29,16 +30,12 @@ export default class BattleRunner implements BattleRunnerInterface {
     return winner
   }
 
-  private prepareArena(
-    fighterOfPlayer: Fighter,
-    opponent: Fighter,
-    randomService: RandomInterface
-  ): Arena {
+  private prepareArena(fighterOfPlayer: Fighter, opponent: Fighter): Arena {
     const { id, ...fighterOfPlayerProps } = fighterOfPlayer.toPrimitives()
     const assailantFighter = new ArenaFighter(id, fighterOfPlayerProps)
     const { id: opponentId, ...opponentProps } = opponent.toPrimitives()
     const opponentFighter = new ArenaFighter(opponentId, opponentProps)
-    return new Arena(assailantFighter, opponentFighter, randomService)
+    return new Arena(assailantFighter, opponentFighter, this.randomService)
   }
 
   private giveReward(winner: Fighter): void {

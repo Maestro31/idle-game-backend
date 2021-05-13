@@ -9,6 +9,7 @@ interface FighterBuilderProps {
   defense: number
   rank: number
   recoveredAt: Date
+  ownerID?: string
 }
 
 export default class FighterBuilder {
@@ -40,7 +41,8 @@ export default class FighterBuilder {
       this.props.magic,
       this.props.defense,
       this.props.rank,
-      this.props.recoveredAt
+      this.props.recoveredAt,
+      this.props.ownerID
     )
   }
 }

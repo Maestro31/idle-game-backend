@@ -4,7 +4,7 @@ import OpponentSelectorInterface from '../../services/OpponentSelectorInterface'
 export default class OpponentSelectorStub implements OpponentSelectorInterface {
   private opponent!: Fighter
 
-  async selectOpponentFor(fighter: Fighter): Promise<Fighter> {
+  async to(fighter: Fighter): Promise<Fighter> {
     return this.opponent
   }
 

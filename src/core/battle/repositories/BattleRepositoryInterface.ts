@@ -3,5 +3,5 @@ import Fighter from '../Fighter'
 import Battle from '../Battle'
 
 export default interface BattleRepositoryInterface extends Repository<Battle> {
-  findFighter(chracterID: string): Promise<Fighter | null>
+  findFighter(characterID: string): Promise<Fighter | null>
 }

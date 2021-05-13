@@ -1,5 +1,4 @@
 import AssaultLogDTO from '../../game/game-logger/AssaultLog'
-import { RandomInterface } from '../../game/services/RandomInterface'
 import DateProviderInterface from '../../shared/services/DateProviderInterface'
 import NotReadyFighterException from './exceptions/NotReadyFighterException'
 import Fighter from './Fighter'
@@ -7,6 +6,7 @@ import BattleRunnerInterface from './services/BattleRunnerInterface'
 
 export default class Battle {
   private _winner!: Fighter
+  private _looser!: Fighter
   private _logs: AssaultLogDTO[] = []
 
   constructor(
@@ -23,22 +23,27 @@ export default class Battle {
     return this._winner
   }
 
-  run(battleRunner: BattleRunnerInterface, randomService: RandomInterface) {
+  get looser(): Fighter {
+    return this._looser
+  }
+
+  run(battleRunner: BattleRunnerInterface) {
     const winner = battleRunner.run(
       this._fighterOfPlayer,
       this.opponent,
-      this.onAssaultLogCreated,
-      randomService
+      this.onAssaultLogCreated
     )
 
-    this._fighterOfPlayer.recoveredAt = new Date(
-      this.dateProvider.now().getTime() + 60 * 60 * 1000
-    )
+    this.applyRecoveredCoolDown(this._fighterOfPlayer)
+    this.applyRecoveredCoolDown(this.opponent)
 
-    this._winner =
-      winner.id === this._fighterOfPlayer.id
-        ? this._fighterOfPlayer
-        : this._opponent
+    if (winner.id === this._fighterOfPlayer.id) {
+      this._winner = this._fighterOfPlayer
+      this._looser = this._opponent
+    } else {
+      this._winner = this._opponent
+      this._looser = this._fighterOfPlayer
+    }
   }
 
   get fighterOfPlayer(): Fighter {
@@ -61,5 +66,11 @@ export default class Battle {
 
   private onAssaultLogCreated = (assaultLog: AssaultLogDTO) => {
     this._logs.push(assaultLog)
+  }
+
+  private applyRecoveredCoolDown(fighter: Fighter): void {
+    fighter.recoveredAt = new Date(
+      this.dateProvider.now().getTime() + 60 * 60 * 1000
+    )
   }
 }

@@ -12,8 +12,14 @@
     "dev": "NODE_ENV=development PORT=3001 npm run server",
     "prod": "NODE_ENV=production npm run server",
     "watch:dev": "nodemon",
-    "test": "jest --watchAll",
-    "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all"
+    "test": "NODE_ENV=test jest --watchAll",
+    "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all",
+    "integration": "NODE_ENV=test jest -c jest.integration.config.js --testTimeout=10000",
+    "preintegration": "NODE_ENV=test npm run db:reset:test && npm run db:create:test",
+    "db:create:test": "NODE_ENV=test npx sequelize-cli db:seed:all",
+    "db:reset:test": "NODE_ENV=test npx sequelize-cli db:seed:undo:all",
+    "db:create:dev": "NODE_ENV=development npx sequelize-cli db:seed:all",
+    "db:reset:dev": "NODE_ENV=development npx sequelize-cli db:seed:undo:all"
   },
   "jest": {
     "testEnvironment": "node"
@@ -27,7 +33,8 @@
     "ignore": [
       "**/__tests__/**",
       "*.test.ts",
-      "*.spec.ts"
+      "*.spec.ts",
+      "*.ispec.ts"
     ]
   },
   "babel": {

@@ -1,3 +1,4 @@
+import AssaultLogDTO from '../../../game/game-logger/AssaultLog'
 import { RandomInterface } from '../../../game/services/RandomInterface'
 import CommandHandler from '../../../shared/domain/command/CommandHandler'
 import DateProviderInterface from '../../../shared/services/DateProviderInterface'
@@ -23,9 +24,7 @@ export default class CreateBattleCommandHandler
 
   async execute({ characterID }: CreateBattleCommand): Promise<void> {
     const fighterOfPlayer = await this.findFighterOfPlayer(characterID)
-    const opponent = await this.opponentSelector.selectOpponentFor(
-      fighterOfPlayer
-    )
+    const opponent = await this.opponentSelector.to(fighterOfPlayer)
 
     const battle = new Battle(
       this.uniqueIdAdapter.generate(),
@@ -34,7 +33,7 @@ export default class CreateBattleCommandHandler
       this.dateProvider
     )
 
-    battle.run(new BattleRunner(), this.randomService)
+    battle.run(new BattleRunner(this.randomService))
 
     await this.battleRepository.save(battle)
   }
@@ -44,4 +43,6 @@ export default class CreateBattleCommandHandler
     if (!fighterOfPlayer) throw new FighterNotFoundException()
     return fighterOfPlayer
   }
+
+  private onAssaultLogCreated(assaultLog: AssaultLogDTO) {}
 }

@@ -7,6 +7,7 @@ export interface FighterProps {
   defense: number
   health: number
   rank: number
+  ownerID?: string
 }
 
 export interface FighterSkills {
@@ -29,10 +30,15 @@ export default class Fighter {
     attack: number,
     magic: number,
     defense: number,
-    private rank: number,
-    private _recoveredAt: Date
+    private _rank: number,
+    private _recoveredAt: Date,
+    readonly ownerID?: string
   ) {
     this.skills = { attack, magic, defense, health }
+  }
+
+  get rank() {
+    return this._rank
   }
 
   get recoveredAt() {
@@ -44,7 +50,7 @@ export default class Fighter {
   }
 
   incrementRank() {
-    this.rank += 1
+    this._rank += 1
   }
 
   incrementSkillPoints() {
@@ -58,6 +64,7 @@ export default class Fighter {
       skillPoints: this.skillPoints,
       rank: this.rank,
       ...this.skills,
+      ownerID: this.ownerID,
     }
   }
 }

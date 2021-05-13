@@ -119,10 +119,21 @@ describe('Create Battle', () => {
       )
     })
 
+    it('should apply a recovery time cool down for the opponent after the battle', async () => {
+      await createBattle.execute({ characterID })
+      expect(opponent.recoveredAt).toEqual(new Date('2021-05-10 22:00:00'))
+    })
+
     it('should declare the winner', async () => {
       await createBattle.execute({ characterID })
       const battle = (await battleRepository.findAll())[0]
       expect(battle.winner).toBe(fighterOfPlayer)
+    })
+
+    it('should declare the looser', async () => {
+      await createBattle.execute({ characterID })
+      const battle = (await battleRepository.findAll())[0]
+      expect(battle.looser).toBe(opponent)
     })
 
     it('should giving a reward to the winner incrementing the rank and skill points', async () => {
