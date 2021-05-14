@@ -1,4 +1,4 @@
-import { CharacterProps } from '../character/character.interface'
+import { CharacterProps } from '../character/CharacterCreator'
 
 export class Fighter {
   protected remainingHealth: number

@@ -4,6 +4,7 @@ import DeleteCharacterCommandHandler from '../../core/charactersManagement/comma
 import IncrementCharacterSkillCommandHandler from '../../core/charactersManagement/commands/IncrementCharacterSkillCommandHandler'
 import SequelizeCharacterRepository from '../../core/charactersManagement/infra/persistence/SequelizeCharacterRepository'
 import SequelizePlayerRepository from '../../core/charactersManagement/infra/persistence/SequelizePlayerRepository'
+import GetCharacterHistoryQueryHandler from '../../core/charactersManagement/queries/GetCharacterHistoryQueryHandler'
 import GetCharactersQueryHandler from '../../core/charactersManagement/queries/GetCharactersQueryHandler'
 import UniqueIdAdapter from '../../services/UniqueIdAdapter'
 import verifyToken from '../middlewares/verifyToken'
@@ -81,6 +82,21 @@ router.get('/', verifyToken, async (req, res) => {
     res.status(200).json(response)
   } catch (e) {
     res.status(400).json({ message: e.message })
+  }
+})
+
+router.get('/:characterID/history', verifyToken, async (req, res) => {
+  const getCharacterHistory = new GetCharacterHistoryQueryHandler()
+
+  if (!req.params.characterID) return res.sendStatus(404)
+
+  try {
+    const histories = await getCharacterHistory.execute({
+      characterID: req.params.characterID,
+    })
+    res.status(200).json(histories)
+  } catch (e) {
+    res.status(500).json({ message: e.message })
   }
 })
 

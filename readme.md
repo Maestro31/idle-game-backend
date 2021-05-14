@@ -1,5 +1,12 @@
 # Pour démarrer le serveur
 
+Prérequis:
+
+La variable d'environnement SECRET_KEY doit être fournie pour le bon fonctionnement des tokens JWT.
+Il est possible de la fournir dans un fichier .env à la racine du projet.
+
+Lancement:
+
 ```
 $ yarn install
 $ yarn db:create:dev
@@ -15,5 +22,5 @@ $ yarn test
 ## Lancer les tests d'intégrations
 
 ```
-$ yarn integration
+$ yarn test:integration
 ```

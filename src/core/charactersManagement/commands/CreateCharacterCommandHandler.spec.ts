@@ -30,7 +30,7 @@ describe('Create Character Command', () => {
 
     await expect(
       createCharacter.execute(buildCommand({ name: '', userID: 'uuid-user-1' }))
-    ).rejects.toThrowError(InvalidArgumentsException)
+    ).rejects.toThrowError('Field name could not be empty')
   })
 
   it('should create the character for the given informations', async () => {

@@ -27,9 +27,10 @@ describe('Opponent Selector', () => {
       .build()
   })
 
-  afterEach(async () => {
+  afterEach(async (done) => {
     await CharacterDAO.destroy({ truncate: true })
     await BattleResultDAO.destroy({ truncate: true })
+    done()
   })
 
   it('should retrieve the only fighter that exists', async () => {

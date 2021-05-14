@@ -1,9 +1,8 @@
 import Arena from './Arena'
-import CharacterCreator from '../character/CharacterCreator'
+import CharacterCreator, { CharacterProps } from '../character/CharacterCreator'
 import RandomStub from '../../services/RandomStub'
 import FighterStub from '../fighter/FighterStub'
 import AssaultLog from '../game-logger/AssaultLog'
-import { CharacterProps } from '../character/character.interface'
 import { IllegalFightError } from './IllegalFightException'
 
 describe('Arena', () => {
@@ -47,7 +46,7 @@ describe('Arena', () => {
 
   describe('Fight mechanic', () => {
     it('should permit the player to attack his opponent with the given random attack', () => {
-      randomService.willRespond(3)
+      randomService.willRespond(2)
 
       arena.startAssault()
 
@@ -56,7 +55,7 @@ describe('Arena', () => {
     })
 
     it('should permit opponent to attack the player with the given random attack', () => {
-      randomService.willRespond(4)
+      randomService.willRespond(3)
 
       arena.nextTurn()
       arena.startAssault()
@@ -66,7 +65,7 @@ describe('Arena', () => {
     })
 
     it('should not permit opponent to take damages when his defense skill is greater than damage value', () => {
-      randomService.willRespond(1)
+      randomService.willRespond(0)
 
       player.overrideCharacterWith({ attack: 5 })
       opponent.overrideCharacterWith({ health: 9, defense: 1 })
@@ -91,7 +90,7 @@ describe('Arena', () => {
 
   describe('Declare winner', () => {
     it('should declare the player as the winner if his opponent is dead', () => {
-      randomService.willRespond(2)
+      randomService.willRespond(1)
 
       player.overrideCharacterWith({ name: 'John Snow', attack: 5 })
       opponent.overrideCharacterWith({
@@ -113,7 +112,7 @@ describe('Arena', () => {
     })
 
     it('should declare the opponent as the winner if the player is dead', () => {
-      randomService.willRespond(2)
+      randomService.willRespond(1)
 
       player.overrideCharacterWith({ name: 'John', health: 1, defense: 1 })
       opponent.overrideCharacterWith({ name: 'Daenerys', attack: 5 })
@@ -132,7 +131,7 @@ describe('Arena', () => {
     })
 
     it('should not permit a fight if a fighter is dead', () => {
-      randomService.willRespond(2)
+      randomService.willRespond(1)
 
       player.overrideCharacterWith({ attack: 5 })
       opponent.overrideCharacterWith({ health: 2 })
@@ -152,7 +151,7 @@ describe('Arena', () => {
         }
       )
 
-      randomService.willRespond(2)
+      randomService.willRespond(1)
 
       player.overrideCharacterWith({ attack: 5 })
       opponent.overrideCharacterWith({ health: 2 })
@@ -187,7 +186,7 @@ describe('Arena', () => {
         assaultLog = receivedAssaultLog
       })
 
-      randomService.willRespond(2)
+      randomService.willRespond(1)
 
       player.overrideCharacterWith({ attack: 5 })
       opponent.overrideCharacterWith({ health: 2 })

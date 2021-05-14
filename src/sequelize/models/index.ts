@@ -31,6 +31,4 @@ BattleResultDAO.hasMany(BattleLogDAO, {
   as: 'logs',
 })
 
-// TODO: Voir pour sérialiser directement les informations du fighter dans le log
-
 export { UserDAO, CharacterDAO, PlayerDAO, BattleResultDAO, BattleLogDAO }

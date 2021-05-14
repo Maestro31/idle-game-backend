@@ -1,4 +1,4 @@
-import { CharacterProps } from '../character/character.interface'
+import { CharacterProps } from '../character/CharacterCreator'
 import { Fighter } from './Fighter'
 
 export default class FighterStub extends Fighter {

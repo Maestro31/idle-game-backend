@@ -40,7 +40,7 @@ describe('Create Battle', () => {
       dateProvider
     )
 
-    randomService.willRespond(6)
+    randomService.willRespond(5)
   })
 
   describe('Validation', () => {
@@ -171,7 +171,7 @@ describe('Create Battle', () => {
       it('should provide logs for each turn', async () => {
         await createBattle.execute({ characterID })
         const battle = (await battleRepository.findAll())[0]
-        expect(battle.logs).toHaveLength(7)
+        expect(battle.logs).toHaveLength(5)
         expect(battle.logs[0]).toEqual({
           turn: 1,
           assailant: {
@@ -187,7 +187,7 @@ describe('Create Battle', () => {
           assailed: {
             id: 'uuid-character-2',
             name: 'Jack',
-            health: 9,
+            health: 8,
             attack: 3,
             magic: 1,
             defense: 1,
@@ -195,8 +195,8 @@ describe('Create Battle', () => {
             skillPoints: 0,
           },
           assaultResult: {
-            attack: 5,
-            damageTaken: 4,
+            attack: 6,
+            damageTaken: 5,
           },
         })
       })
@@ -205,7 +205,7 @@ describe('Create Battle', () => {
     function prepareBattle(id: string) {
       fighterOfPlayer = new FighterBuilder(id)
         .withProps({
-          recoveredAt: new Date('2021-05-10 20:59:59'),
+          recoveredAt: new Date('2021-05-10 19:00:00'),
           attack: 5,
           magic: 3,
           defense: 2,
@@ -214,7 +214,7 @@ describe('Create Battle', () => {
 
       opponent = new FighterBuilder('uuid-character-2')
         .withProps({
-          recoveredAt: new Date('2021-05-10 20:59:59'),
+          recoveredAt: new Date('2021-05-10 19:00:00'),
           attack: 3,
           magic: 1,
           defense: 1,

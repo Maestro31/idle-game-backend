@@ -1,5 +1,4 @@
-import { CharacterProps } from '../character/character.interface'
-import CharacterCreator from '../character/CharacterCreator'
+import CharacterCreator, { CharacterProps } from '../character/CharacterCreator'
 import { Fighter } from '../fighter/Fighter'
 import AssaultLog from '../game-logger/AssaultLog'
 import { RandomInterface } from '../../shared/services/RandomInterface'
@@ -42,7 +41,8 @@ export default class Arena {
     this.turnCount += 1
 
     const assailantAttack = this.assailantFighter.getAttack()
-    const attackToInflict = this.randomService.getValueUntil(assailantAttack)
+    const attackToInflict =
+      this.randomService.getValueUntil(assailantAttack) + 1
 
     const previousAssailedHealth = this.assailedFighter.getRemainingHealth()
 

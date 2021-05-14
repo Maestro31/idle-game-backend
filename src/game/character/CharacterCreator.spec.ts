@@ -1,5 +1,4 @@
-import { CharacterProps, Skill } from './character.interface'
-import CharacterCreator from './CharacterCreator'
+import CharacterCreator, { CharacterProps, Skill } from './CharacterCreator'
 
 describe('CharacterCreator', () => {
   let characterCreator: CharacterCreator

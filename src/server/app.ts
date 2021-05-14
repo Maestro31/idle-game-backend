@@ -14,7 +14,10 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express()
 
-app.use(logger('dev'))
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger('dev'))
+}
+
 app.use(json())
 app.use(urlencoded({ extended: false }))
 

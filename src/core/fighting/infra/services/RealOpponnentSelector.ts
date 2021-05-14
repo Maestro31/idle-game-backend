@@ -6,6 +6,7 @@ import NoOpponentFoundException from '../../exceptions/NoOpponentFoundException'
 import Fighter from '../../Fighter'
 import FighterMapper from '../../mappers/FighterMapper'
 import OpponentSelectorInterface from '../../services/OpponentSelectorInterface'
+import { CharacterDAO } from '../../../../sequelize/models'
 
 export default class RealOpponentSelector implements OpponentSelectorInterface {
   constructor(
@@ -27,7 +28,7 @@ export default class RealOpponentSelector implements OpponentSelectorInterface {
       WHERE battleCount = (SELECT MIN(battleCount) FROM ${battleCountByCharacterQuery})
       AND ABS(rank - ?) = (SELECT MIN(ABS(rank - ?)) FROM Character)
       AND NOT ownerID = ?
-      AND datetime(recoveredAt) < datetime(?)
+      AND datetime(recoveredAt) <= datetime(?)
       ORDER BY createdAt ASC`,
       {
         replacements: [
@@ -44,8 +45,7 @@ export default class RealOpponentSelector implements OpponentSelectorInterface {
       throw new NoOpponentFoundException()
     }
 
-    const index = this.randomService.getValueUntil(results.length - 1) - 1
-    console.log(index)
+    const index = this.randomService.getValueUntil(results.length - 1)
     return FighterMapper.toDomain(results[index])
   }
 }

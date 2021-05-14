@@ -4,7 +4,8 @@ import PlayerRepositoryInterface from '../repositories/PlayerRepositoryInterface
 import DeleteCharacterCommand from './DeleteCharacterCommand'
 
 export default class DeleteCharacterCommandHandler
-  implements CommandHandler<DeleteCharacterCommand, Promise<void>> {
+  implements CommandHandler<DeleteCharacterCommand, Promise<void>>
+{
   constructor(private playerRepository: PlayerRepositoryInterface) {}
   async execute({
     characterID,

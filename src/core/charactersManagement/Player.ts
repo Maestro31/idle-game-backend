@@ -1,4 +1,3 @@
-import InvalidArgumentsException from '../../shared/domain/exceptions/InvalidArgumentException'
 import Character, { CharacterStatus, Skill } from './Character'
 import CharacterLimitReachedException from './exceptions/CharacterLimitReachedException'
 import CharacterNotFoundException from './exceptions/CharacterNotFoundException'
@@ -23,7 +22,6 @@ export default class Player {
     magic: number,
     defense: number
   ) {
-    if (name === '') throw new InvalidArgumentsException('name')
     if (this.characters.length === Player.CHARACTER_LIMIT)
       throw new CharacterLimitReachedException()
 
