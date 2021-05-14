@@ -1,5 +1,4 @@
 import UniqueIdAdapterStub from '../../../services/UniqueIdAdaperStub'
-import InvalidArgumentsException from '../../../shared/domain/exceptions/InvalidArgumentException'
 import CharacterLimitReachedException from '../exceptions/CharacterLimitReachedException'
 import InvalidCharacterStateException from '../exceptions/InvalidCharacterStateException'
 import InMemoryCharacterRepository from '../infra/persistence/InMemoryCharacterRepository'

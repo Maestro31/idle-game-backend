@@ -8,6 +8,7 @@ export interface FighterProps {
   health: number
   rank: number
   ownerID?: string
+  recoveredAt: Date
 }
 
 export interface FighterSkills {
@@ -69,6 +70,7 @@ export default class Fighter {
       rank: this.rank,
       ...this.skills,
       ownerID: this.ownerID,
+      recoveredAt: this.recoveredAt,
     }
   }
 }

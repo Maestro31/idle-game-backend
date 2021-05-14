@@ -164,6 +164,7 @@ describe('Create Battle', () => {
         magic: 3,
         skillPoints: 1,
         rank: 4,
+        recoveredAt: new Date('2021-05-10 22:00:00'),
       })
     })
 
@@ -183,6 +184,7 @@ describe('Create Battle', () => {
             defense: 2,
             rank: 3,
             skillPoints: 0,
+            recoveredAt: new Date('2021-05-10 19:00:00'),
           },
           assailed: {
             id: 'uuid-character-2',
@@ -193,6 +195,7 @@ describe('Create Battle', () => {
             defense: 1,
             rank: 3,
             skillPoints: 0,
+            recoveredAt: new Date('2021-05-10 19:00:00'),
           },
           assaultResult: {
             attack: 6,

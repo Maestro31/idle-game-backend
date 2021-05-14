@@ -107,6 +107,33 @@ describe('Characters Router', () => {
     })
   })
 
+  describe('Get Character', () => {
+    const characterID = 'uuid-character-1'
+    beforeEach(async () => {
+      await createCharacter(characterID, userID)
+    })
+
+    it('should get the character with the given id', async () => {
+      const { body } = await request(app)
+        .get(`/characters/${characterID}`)
+        .set({ Authorization: `Bearer ${authToken}` })
+        .expect(200)
+
+      expect(body.id).toBe(characterID)
+    })
+
+    it('should return 400 when character does not exists', async () => {
+      await request(app)
+        .get(`/characters/bad-character-id`)
+        .set({ Authorization: `Bearer ${authToken}` })
+        .expect(400)
+    })
+
+    it('should return 403 when auth token is not provided', async () => {
+      await request(app).get(`/characters/${characterID}`).expect(403)
+    })
+  })
+
   describe('Increment Skill', () => {
     const characterID = 'uuid-character-1'
     beforeEach(async () => {

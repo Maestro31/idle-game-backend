@@ -50,8 +50,11 @@ export default class Player {
     character.incrementSkill(skill)
   }
 
-  private findCharacterById(characterID: string): Character {
-    const character = this.characters.find((c) => c.id === characterID)
+  findCharacterById(characterID: string): Character {
+    const character = this.getLivingCharacters().find(
+      (c) => c.id === characterID
+    )
+
     if (!character) throw new CharacterNotFoundException()
     return character
   }

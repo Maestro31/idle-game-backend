@@ -5,6 +5,7 @@ import indexRouter from './routes/index'
 import usersRouter from './routes/users'
 import charactersRouter from './routes/characters'
 import battleRouter from './routes/battle'
+import cors from 'cors'
 
 import dotenv from 'dotenv'
 
@@ -18,6 +19,7 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'))
 }
 
+app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: false }))
 

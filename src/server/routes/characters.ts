@@ -5,6 +5,7 @@ import IncrementCharacterSkillCommandHandler from '../../core/charactersManageme
 import SequelizeCharacterRepository from '../../core/charactersManagement/infra/persistence/SequelizeCharacterRepository'
 import SequelizePlayerRepository from '../../core/charactersManagement/infra/persistence/SequelizePlayerRepository'
 import GetCharacterHistoryQueryHandler from '../../core/charactersManagement/queries/GetCharacterHistoryQueryHandler'
+import GetCharacterQueryHandler from '../../core/charactersManagement/queries/GetCharacterQueryHandler'
 import GetCharactersQueryHandler from '../../core/charactersManagement/queries/GetCharactersQueryHandler'
 import UniqueIdAdapter from '../../services/UniqueIdAdapter'
 import verifyToken from '../middlewares/verifyToken'
@@ -79,6 +80,20 @@ router.get('/', verifyToken, async (req, res) => {
 
   try {
     const response = await getCharacters.execute({ userID: req.currentUserId })
+    res.status(200).json(response)
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+})
+
+router.get('/:characterID', verifyToken, async (req, res) => {
+  const getCharacter = new GetCharacterQueryHandler(playerRepository)
+
+  try {
+    const response = await getCharacter.execute({
+      characterID: req.params.characterID,
+      userID: req.currentUserId,
+    })
     res.status(200).json(response)
   } catch (e) {
     res.status(400).json({ message: e.message })
