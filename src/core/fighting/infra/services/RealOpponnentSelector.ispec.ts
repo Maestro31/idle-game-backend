@@ -2,7 +2,10 @@ import RandomStub from '../../../../services/RandomStub'
 import { BattleResultDAO, CharacterDAO } from '../../../../sequelize/models'
 import DateProviderStub from '../../../../services/DateProviderStub'
 import UniqueIdAdapter from '../../../../services/UniqueIdAdapter'
-import Character from '../../../charactersManagement/Character'
+import Character, {
+  CharacterProps,
+  CharacterStatus,
+} from '../../../charactersManagement/Character'
 import CharacterMapper from '../../../charactersManagement/mappers/CharacterMapper'
 import FighterBuilder from '../../builders/FighterBuilder'
 import NoOpponentFoundException from '../../exceptions/NoOpponentFoundException'
@@ -68,8 +71,6 @@ describe('Opponent Selector', () => {
       looserID: id2,
     })
 
-    console.log(id1, id2, expectedId)
-
     expect((await opponentSelector.to(fighter)).id).toBe(expectedId)
   })
 
@@ -109,15 +110,23 @@ describe('Opponent Selector', () => {
     )
   })
 
+  it('should not retrieve a character who have deleted status', async () => {
+    await createCharacterWithProps({
+      rank: 10,
+      status: CharacterStatus.DELETED,
+    })
+
+    await expect(opponentSelector.to(fighter)).rejects.toThrowError(
+      NoOpponentFoundException
+    )
+  })
+
   async function createCharacterWithProps({
-    rank,
+    rank = 0,
     ownerID = 'uuid-player-2',
     recoveredAt = new Date('2021-05-13 10:00:00'),
-  }: {
-    rank: number
-    ownerID?: string
-    recoveredAt?: Date
-  }): Promise<string> {
+    ...props
+  }: Partial<CharacterProps>): Promise<string> {
     const id = uniqueIdAdapter.generate()
     const character = Character.fromPrimitives({
       id,
@@ -130,6 +139,8 @@ describe('Opponent Selector', () => {
       defense: 0,
       recoveredAt,
       ownerID,
+      status: CharacterStatus.LIVING,
+      ...props,
     })
 
     await CharacterDAO.create({

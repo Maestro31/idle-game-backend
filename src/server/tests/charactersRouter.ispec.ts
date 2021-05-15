@@ -34,48 +34,30 @@ describe('Characters Router', () => {
   })
 
   describe('Create character', () => {
-    const validParams = {
-      name: 'My first character',
-      skillPoints: 11,
-      health: 10,
-      attack: 0,
-      magic: 1,
-      defense: 0,
-    }
-
     it('should create character', async () => {
       await request(app)
         .post('/characters')
         .set({ Authorization: `Bearer ${authToken}` })
-        .send(validParams)
+        .send({ name: 'My first character' })
         .expect(201)
 
       const character = (await CharacterDAO.findAll())[0]
       expect(character.name).toBe('My first character')
     })
 
-    for (const field of [
-      'name',
-      'skillPoints',
-      'health',
-      'attack',
-      'magic',
-      'defense',
-    ]) {
-      it(`should return 400 for bad request when ${field} is blank`, async () => {
-        await request(app)
-          .post('/characters')
-          .set({ Authorization: `Bearer ${authToken}` })
-          .send({
-            ...validParams,
-            [field]: undefined,
-          })
-          .expect(400)
-      })
-    }
+    it('should return 400 for bad request when name is blank', async () => {
+      await request(app)
+        .post('/characters')
+        .set({ Authorization: `Bearer ${authToken}` })
+        .send({})
+        .expect(400)
+    })
 
     it('should return 403 when auth token is not provided', async () => {
-      await request(app).post('/characters').send(validParams).expect(403)
+      await request(app)
+        .post('/characters')
+        .send({ name: 'My first character' })
+        .expect(403)
     })
   })
 

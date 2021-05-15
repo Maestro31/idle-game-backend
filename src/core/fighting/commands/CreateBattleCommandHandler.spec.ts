@@ -103,13 +103,21 @@ describe('Create Battle', () => {
 
     it('should declare a match a draw', async () => {
       const fighter = new FighterBuilder('uuid-character-1')
-        .withProps({ attack: 2, defense: 3 })
+        .withProps({
+          attack: 2,
+          defense: 3,
+          recoveredAt: new Date('2021-05-10 21:00:00'),
+        })
         .build()
 
       fighterRepository.feed([fighter])
 
       const opponent = new FighterBuilder('uuid-character-2')
-        .withProps({ attack: 2, defense: 3 })
+        .withProps({
+          attack: 2,
+          defense: 3,
+          recoveredAt: new Date('2021-05-10 21:00:00'),
+        })
         .build()
 
       opponentSelector.willSelect(opponent)

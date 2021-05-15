@@ -13,26 +13,18 @@ export default class Player {
     )
   }
 
-  addCharacter(
-    characterID: string,
-    name: string,
-    skillPoints: number,
-    health: number,
-    attack: number,
-    magic: number,
-    defense: number
-  ) {
+  addCharacter(characterID: string, name: string) {
     if (this.characters.length === Player.CHARACTER_LIMIT)
       throw new CharacterLimitReachedException()
 
     const character = Character.fromPrimitives({
       id: characterID,
       name,
-      skillPoints,
-      health,
-      attack,
-      magic,
-      defense,
+      skillPoints: 12,
+      health: 10,
+      attack: 0,
+      magic: 0,
+      defense: 0,
       rank: 0,
       ownerID: this.id,
       recoveredAt: new Date(),

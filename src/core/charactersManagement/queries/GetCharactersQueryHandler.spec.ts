@@ -1,4 +1,3 @@
-import Character, { CharacterStatus } from '../Character'
 import InMemoryCharacterRepository from '../infra/persistence/InMemoryCharacterRepository'
 import InMemoryPlayerRepository from '../infra/persistence/InMemoryPlayerRepository'
 import Player from '../Player'
@@ -26,8 +25,8 @@ describe('Get Characters', () => {
     const player = new Player('uuid-user-1', [])
     playerRepository.feed([player])
 
-    player.addCharacter('uuid-character-1', 'Jack', 12, 10, 0, 0, 0)
-    player.addCharacter('uuid-character-2', 'John', 12, 10, 0, 0, 0)
+    player.addCharacter('uuid-character-1', 'Jack')
+    player.addCharacter('uuid-character-2', 'John')
 
     playerRepository.save(player)
 
@@ -39,8 +38,8 @@ describe('Get Characters', () => {
     const player = new Player('uuid-user-1')
     playerRepository.feed([player])
 
-    player.addCharacter('uuid-character-1', 'Jack', 12, 10, 0, 0, 0)
-    player.addCharacter('uuid-character-2', 'John', 12, 10, 0, 0, 0)
+    player.addCharacter('uuid-character-1', 'Jack')
+    player.addCharacter('uuid-character-2', 'John')
 
     player.setCharacterStatusAsDeleted('uuid-character-1')
     characterRepository.feed(player.getLivingCharacters())
