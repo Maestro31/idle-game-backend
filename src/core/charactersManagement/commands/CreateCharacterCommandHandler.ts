@@ -20,7 +20,15 @@ export default class CreateCharacterCommandHandler
       player = new Player(payload.userID)
     }
 
-    player.addCharacter(this.uniqueIdAdapter.generate(), payload.name)
+    player.addCharacter(
+      this.uniqueIdAdapter.generate(),
+      payload.name,
+      payload.skillPoints,
+      payload.health,
+      payload.attack,
+      payload.magic,
+      payload.defense
+    )
     await this.playerRepository.save(player)
   }
 }

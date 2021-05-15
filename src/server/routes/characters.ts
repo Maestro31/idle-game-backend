@@ -22,10 +22,17 @@ router.post('/', verifyToken, async (req, res) => {
     uniqueIdAdapter
   )
 
+  const { skillPoints, attack, magic, defense, health } = req.body
+
   try {
     await createCharacter.execute({
       name: req.body.name,
       userID: req.currentUserId,
+      skillPoints,
+      attack,
+      magic,
+      defense,
+      health,
     })
     res.status(201).send()
   } catch (e) {

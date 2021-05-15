@@ -21,7 +21,6 @@ describe('Characters Router', () => {
       email: 'john@doe.com',
       hashedPassword: bcrypt.hashSync('123456', 10),
     })
-
     await PlayerDAO.create({ userID })
     authToken = await signIn('john@doe.com', '123456')
   })
@@ -34,35 +33,54 @@ describe('Characters Router', () => {
   })
 
   describe('Create character', () => {
+    const validParams = {
+      name: 'My first character',
+      skillPoints: 11,
+      health: 10,
+      attack: 0,
+      magic: 1,
+      defense: 0,
+    }
+
     it('should create character', async () => {
       await request(app)
         .post('/characters')
         .set({ Authorization: `Bearer ${authToken}` })
-        .send({ name: 'My first character' })
+        .send(validParams)
         .expect(201)
 
       const character = (await CharacterDAO.findAll())[0]
       expect(character.name).toBe('My first character')
     })
 
-    it('should return 400 for bad request when name is blank', async () => {
-      await request(app)
-        .post('/characters')
-        .set({ Authorization: `Bearer ${authToken}` })
-        .send({})
-        .expect(400)
-    })
+    for (const field of [
+      'name',
+      'skillPoints',
+      'health',
+      'attack',
+      'magic',
+      'defense',
+    ]) {
+      it(`should return 400 for bad request when ${field} is blank`, async () => {
+        await request(app)
+          .post('/characters')
+          .set({ Authorization: `Bearer ${authToken}` })
+          .send({
+            ...validParams,
+            [field]: undefined,
+          })
+          .expect(400)
+      })
+    }
 
     it('should return 403 when auth token is not provided', async () => {
-      await request(app)
-        .post('/characters')
-        .send({ name: 'My first character' })
-        .expect(403)
+      await request(app).post('/characters').send(validParams).expect(403)
     })
   })
 
   describe('Delete character', () => {
     const characterID = 'uuid-character-1'
+
     beforeEach(async () => {
       await createCharacter(characterID, userID)
     })
@@ -72,18 +90,15 @@ describe('Characters Router', () => {
         .delete(`/characters/${characterID}`)
         .set({ Authorization: `Bearer ${authToken}` })
         .expect(204)
-
       const character: any = await CharacterDAO.findByPk(characterID)
       expect(character.status).toBe('deleted')
     })
-
     it('should return 400 if the given id does not exists', async () => {
       await request(app)
         .delete(`/characters/bad-character-id`)
         .set({ Authorization: `Bearer ${authToken}` })
         .expect(400)
     })
-
     it('should return 403 when auth token not provided', async () => {
       await request(app).delete(`/characters/bad-character-id`).expect(403)
     })
@@ -100,7 +115,6 @@ describe('Characters Router', () => {
         .get(`/characters/${characterID}`)
         .set({ Authorization: `Bearer ${authToken}` })
         .expect(200)
-
       expect(body.id).toBe(characterID)
     })
 
@@ -168,12 +182,10 @@ describe('Characters Router', () => {
     it('should return character list with two elements', async () => {
       await createCharacter('uuid-character-1', userID)
       await createCharacter('uuid-character-2', userID)
-
       const { body } = await request(app)
         .get('/characters')
         .set({ Authorization: `Bearer ${authToken}` })
         .expect(200)
-
       expect(body).toHaveLength(2)
     })
   })
@@ -192,19 +204,16 @@ describe('Characters Router', () => {
         .get(`/characters/${characterID}/history`)
         .set({ Authorization: `Bearer ${authToken}` })
         .expect(200)
-
       expect(body).toHaveLength(0)
     })
 
     it('should return two elements', async () => {
       await createBattleHistory(characterID, opponentID)
       await createBattleHistory(characterID, opponentID)
-
       const { body } = await request(app)
         .get(`/characters/${characterID}/history`)
         .set({ Authorization: `Bearer ${authToken}` })
         .expect(200)
-
       expect(body).toHaveLength(2)
     })
 

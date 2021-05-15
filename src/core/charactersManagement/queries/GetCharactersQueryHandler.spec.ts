@@ -25,8 +25,8 @@ describe('Get Characters', () => {
     const player = new Player('uuid-user-1', [])
     playerRepository.feed([player])
 
-    player.addCharacter('uuid-character-1', 'Jack')
-    player.addCharacter('uuid-character-2', 'John')
+    player.addCharacter('uuid-character-1', 'Jack', 0, 6, 3, 3, 3)
+    player.addCharacter('uuid-character-2', 'John', 0, 6, 3, 3, 3)
 
     playerRepository.save(player)
 
@@ -38,8 +38,8 @@ describe('Get Characters', () => {
     const player = new Player('uuid-user-1')
     playerRepository.feed([player])
 
-    player.addCharacter('uuid-character-1', 'Jack')
-    player.addCharacter('uuid-character-2', 'John')
+    player.addCharacter('uuid-character-1', 'Jack', 0, 6, 3, 3, 3)
+    player.addCharacter('uuid-character-2', 'John', 0, 6, 3, 3, 3)
 
     player.setCharacterStatusAsDeleted('uuid-character-1')
     characterRepository.feed(player.getLivingCharacters())

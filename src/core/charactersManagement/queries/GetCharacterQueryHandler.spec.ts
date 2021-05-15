@@ -39,8 +39,8 @@ describe('Get character', () => {
   })
 
   it('should return the character for the given id', async () => {
-    player.addCharacter('uuid-character-1', 'Jack')
-    player.addCharacter('uuid-character-2', 'John')
+    player.addCharacter('uuid-character-1', 'Jack', 0, 6, 3, 3, 3)
+    player.addCharacter('uuid-character-2', 'John', 0, 6, 3, 3, 3)
 
     const result = await getCharacter.execute({
       characterID: 'uuid-character-1',
@@ -51,7 +51,7 @@ describe('Get character', () => {
   })
 
   it('should throw error when all characters are deleted', async () => {
-    player.addCharacter('uuid-character-1', 'Jack')
+    player.addCharacter('uuid-character-1', 'Jack', 0, 6, 3, 3, 3)
     player.setCharacterStatusAsDeleted('uuid-character-1')
 
     await expect(
