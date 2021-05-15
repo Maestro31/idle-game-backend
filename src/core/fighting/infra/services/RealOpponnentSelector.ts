@@ -15,28 +15,26 @@ export default class RealOpponentSelector implements OpponentSelectorInterface {
   ) {}
 
   async to(fighter: Fighter): Promise<Fighter> {
-    const battleCountByCharacterQuery = `
-      (SELECT c.id, COUNT(b.id) AS battleCount FROM Character AS c
-      LEFT OUTER JOIN BattleResult AS b ON b.winnerID = c.id or b.looserID = c.id
-      GROUP BY c.id)`
+    const subQuery = `
+      (SELECT *, battleCount FROM Character
+        LEFT OUTER JOIN
+        (SELECT c.id, COUNT(b.id) AS battleCount FROM Character AS c
+        LEFT OUTER JOIN BattleResult AS b ON b.winnerID = c.id or b.looserID = c.id
+        GROUP BY c.id) AS withBattleCount
+        ON withBattleCount.id = Character.id
+        WHERE ABS(rank - ${fighter.rank}) = (SELECT MIN(ABS(rank - ${
+      fighter.rank
+    })) FROM Character)
+        AND NOT ownerID = '${fighter.ownerID}'
+        AND datetime(recoveredAt) <= datetime('${this.dateProvider
+          .now()
+          .toISOString()}')
+        ORDER BY createdAt ASC)`
 
     const results = await sequelize.query(
-      `
-      SELECT *, battleCount FROM Character
-      INNER JOIN ${battleCountByCharacterQuery} AS withBattleCount
-      ON withBattleCount.id = Character.id
-      WHERE battleCount = (SELECT MIN(battleCount) FROM ${battleCountByCharacterQuery})
-      AND ABS(rank - ?) = (SELECT MIN(ABS(rank - ?)) FROM Character)
-      AND NOT ownerID = ?
-      AND datetime(recoveredAt) <= datetime(?)
-      ORDER BY createdAt ASC`,
+      `SELECT * FROM ${subQuery}
+      WHERE battleCount = (SELECT MIN(battleCount) FROM ${subQuery})`,
       {
-        replacements: [
-          fighter.rank,
-          fighter.rank,
-          fighter.ownerID,
-          this.dateProvider.now(),
-        ],
         type: QueryTypes.SELECT,
       }
     )

@@ -27,10 +27,9 @@ describe('Opponent Selector', () => {
       .build()
   })
 
-  afterEach(async (done) => {
+  afterEach(async () => {
     await CharacterDAO.destroy({ truncate: true })
     await BattleResultDAO.destroy({ truncate: true })
-    done()
   })
 
   it('should retrieve the only fighter that exists', async () => {
@@ -68,6 +67,8 @@ describe('Opponent Selector', () => {
       winnerID: uniqueIdAdapter.generate(),
       looserID: id2,
     })
+
+    console.log(id1, id2, expectedId)
 
     expect((await opponentSelector.to(fighter)).id).toBe(expectedId)
   })
