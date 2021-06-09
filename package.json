@@ -13,6 +13,7 @@
     "prod": "NODE_ENV=production npm run server",
     "watch:dev": "nodemon",
     "test": "NODE_ENV=test jest --watchAll",
+    "ci-test": "NODE_ENV=test jest",
     "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all",
     "pretest:integration": "NODE_ENV=test rm -f ./db.test.sqlite && npm run db:create:test",
     "test:integration": "NODE_ENV=test jest -c jest.integration.config.js --testTimeout=10000 --runInBand",
