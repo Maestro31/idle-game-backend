@@ -33,7 +33,7 @@ jobs:
           command: yarn ci-test
           
       - run:
-          name: Run tests
+          name: Run integration tests
           command: yarn test:integration
 
 workflows:
